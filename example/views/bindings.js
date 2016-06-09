@@ -1,8 +1,6 @@
-'use strict'
-
-const $ = require('jquery')
-const ko = require('knockout')
-const escape = require('escape-html')
+import $ from 'jquery'
+import ko from 'knockout'
+import escape from 'escape-html'
 
 ko.components.register('bindings', {
   synchronous: true,
@@ -90,8 +88,8 @@ ko.components.register('bindings', {
       <section>
         <a data-bind="path: '/context'" class="btn btn-primary"><i class="fa fa-arrow-left"></i> context</a>
         <span class="pull-right">
-          <a data-bind="path: '/nested-routing'" class="btn btn-primary">nested routing <i class="fa fa-arrow-right"></i></a>
+          <a data-bind="path: '/nested-routing/foo'" class="btn btn-primary">nested routing <i class="fa fa-arrow-right"></i></a>
         </span>
       </section>
     </div>
-`})
+` })

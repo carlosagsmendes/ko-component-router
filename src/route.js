@@ -1,9 +1,7 @@
-'use strict'
+import pathtoRegexp from 'path-to-regexp'
+import { decodeURLEncodedURIComponent, isUndefined } from './utils'
 
-const pathtoRegexp = require('path-to-regexp')
-const { decodeURLEncodedURIComponent } = require('./utils')
-
-class Route {
+export default class Route {
   constructor(path, component) {
     if (path[path.length - 1] === '!') {
       path = path.replace('!', ':child_path(.*)?')
@@ -46,9 +44,9 @@ class Route {
     for (let i = 1, len = matches.length; i < len; ++i) {
       const k = this._keys[i - 1]
       const v = decodeURLEncodedURIComponent(matches[i])
-      if (v !== undefined || !(hasOwnProperty.call(params, k.name))) {
+      if (isUndefined(v) || !(hasOwnProperty.call(params, k.name))) {
         if (k.name === 'child_path') {
-          if (v !== undefined) {
+          if (!isUndefined(v)) {
             childPath = `/${v}`
             path = path.substring(0, path.lastIndexOf(childPath))
             pathname = pathname.substring(0, pathname.lastIndexOf(childPath))
@@ -62,5 +60,3 @@ class Route {
     return [path, params, hash, pathname, querystring, childPath]
   }
 }
-
-module.exports = Route

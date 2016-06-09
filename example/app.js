@@ -1,27 +1,24 @@
-'use strict'
-
-// polyfills
-require('es6-promise').polyfill()
-require('html5-history-api')
+import history from 'html5-history-api'
+import promise from 'es6-promise'
+import raf from 'raf'
 if (history.emulate) {
   history.redirect('!/', '')
 }
+if (!window.Promise) {
+  promise.polyfill()
+}
 if (!window.requestAnimationFrame) {
-  const raf = require('raf')
-  window.requestAnimationFrame = raf
-  window.cancelAnimationFrame = raf.cancel
+  raf.polyfill()
 }
 
-const $ = require('jquery')
-const ko = require('knockout')
-window.ko = ko // attach for debugging purposes
+import $ from 'jquery'
+import ko from 'knockout'
 
-require('../src')
-require('./views')
-require('./bindings')
-require('./styles')
-
-const { inTransition, outTransition } = require('./lib/animate')
+import '../src'
+import './views'
+import './bindings'
+import './styles'
+import { inTransition, outTransition } from './lib/animate'
 
 class App {
   constructor() {
@@ -48,27 +45,8 @@ ko.components.register('app', {
     <div class="container">
       <div class="page-header">
         <small class="text-muted text-right pull-right">
-          <p>
-            <img src="https://img.shields.io/npm/v/ko-component-router.svg" alt="NPM" title="" />
-            <img src="https://img.shields.io/npm/l/ko-component-router.svg" alt="WTFPL" title="" />
-            <a href="https://travis-ci.org/Profiscience/ko-component-router">
-              <img src="https://img.shields.io/travis/Profiscience/ko-component-router.svg" alt="Travis" title="" />
-            </a>
-            <a href="https://coveralls.io/github/Profiscience/ko-component-router">
-              <img src="https://img.shields.io/coveralls/Profiscience/ko-component-router.svg?maxAge=2592000" alt="Coveralls" title="" />
-            </a>
-            <a href="https://david-dm.org/Profiscience/ko-component-router">
-              <img src="https://img.shields.io/david/Profiscience/ko-component-router.svg" alt="Dependency Status" title="" />
-            </a>
-            <a href="https://david-dm.org/Profiscience/ko-component-router#info=peerDependencies&amp;view=table">
-              <img src="https://img.shields.io/david/peer/Profiscience/ko-component-router.svg?maxAge=2592000" alt="Peer Dependency Status" title="" />
-            </a>
-            <a href="http://npm-stat.com/charts.html?package=ko-component-router&amp;author=&amp;from=&amp;to=">
-              <img src="https://img.shields.io/npm/dt/ko-component-router.svg?maxAge=2592000" alt="NPM Downloads" title="" />
-            </a>
-          </p>
           pssst... this documentation is built using knockout + this router,
-          <a href="https://github.com/caseyWebb/ko-component-router/tree/gh-pages/example">source</a>
+          <a href="https://github.com/Profiscience/ko-component-router/tree/gh-pages/example">source</a>
         </small>
         <h1>
           ko-component-router
@@ -77,10 +55,29 @@ ko.components.register('app', {
             / Profisciencē
           </small>
         </h1>
+        <p>
+          <img src="https://img.shields.io/npm/v/ko-component-router.svg" alt="NPM" title="" />
+          <img src="https://img.shields.io/npm/l/ko-component-router.svg" alt="WTFPL" title="" />
+          <a href="https://travis-ci.org/Profiscience/ko-component-router">
+            <img src="https://img.shields.io/travis/Profiscience/ko-component-router.svg" alt="Travis" title="" />
+          </a>
+          <a href="https://coveralls.io/github/Profiscience/ko-component-router">
+            <img src="https://img.shields.io/coveralls/Profiscience/ko-component-router.svg?maxAge=2592000" alt="Coveralls" title="" />
+          </a>
+          <a href="https://david-dm.org/Profiscience/ko-component-router">
+            <img src="https://img.shields.io/david/Profiscience/ko-component-router.svg" alt="Dependency Status" title="" />
+          </a>
+          <a href="https://david-dm.org/Profiscience/ko-component-router#info=peerDependencies&amp;view=table">
+            <img src="https://img.shields.io/david/peer/Profiscience/ko-component-router.svg?maxAge=2592000" alt="Peer Dependency Status" title="" />
+          </a>
+          <a href="http://npm-stat.com/charts.html?package=ko-component-router&amp;author=&amp;from=&amp;to=">
+            <img src="https://img.shields.io/npm/dt/ko-component-router.svg?maxAge=2592000" alt="NPM Downloads" title="" />
+          </a>
+        </p>
       </div>
 
       <div class="row">
-        <div class="side-nav col-sm-4 col-lg-2">
+        <div class="side-nav col-sm-4 col-lg-3">
           <div data-bind="affix">
             <ul class="nav nav-stacked">
               <li><a data-bind="path: '/'">getting started</a></li>
@@ -107,7 +104,9 @@ ko.components.register('app', {
                   <li><a data-bind="path: '/context#pathname'">pathname</a></li>
                   <li><a data-bind="path: '/context#canonicalPath'">canonicalPath</a></li>
                   <li><a data-bind="path: '/context#hash'">hash</a></li>
+                  <li><a data-bind="path: '/context#isNavigating'">isNavigating</a></li>
                   <li><a data-bind="path: '/context#update'">update</a></li>
+                  <li><a data-bind="path: '/context#addBeforeNavigateCallback'">addBeforeNavigateCallback</a></li>
                   <li><a data-bind="path: '/context#parent'">$parent</a></li>
                   <li><a data-bind="path: '/context#child'">$child</a></li>
                 </ul>
@@ -124,13 +123,13 @@ ko.components.register('app', {
             </ul>
             <hr>
             <div class="text-center">
-              <a href="https://github.com/caseyWebb/ko-component-router">
+              <a href="https://github.com/Profiscience/ko-component-router">
                 <i class="fa fa-github"></i> View on Github
               </a>
             </div>
           </div>
         </div>
-        <div class="col-sm-8 col-lg-8">
+        <div class="col-sm-8">
           <ko-component-router params="
             routes: routes,
             base: base,
@@ -144,6 +143,4 @@ ko.components.register('app', {
   `
 })
 
-$(() => {
-  ko.applyBindings()
-})
+$(() => ko.applyBindings())

@@ -1,7 +1,5 @@
-'use strict'
-
-const ko = require('knockout')
-const escape = require('escape-html')
+import ko from 'knockout'
+import escape from 'escape-html'
 
 ko.components.register('getting-started', {
   synchronous: true,
@@ -22,12 +20,6 @@ ko.components.register('getting-started', {
           updates, and it provides simple abstractions for working with querystring parameters
           and history.state is a self-contained manner.
         <p>
-
-        <p>
-          For a more in depth look at building SPA's with Knockout + ko-component-router,
-          may I direct your attention to <a href="#">this blog post.</a>
-        </p>
-
       </section>
       <section>
         <h2>installation</h2>
